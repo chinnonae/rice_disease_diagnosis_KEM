@@ -11,6 +11,10 @@
     color: white;
 }
 
+.app-content {
+    margin-top: 50px
+}
+
 input {
   vertical-align: baseline;
   position: relative;
