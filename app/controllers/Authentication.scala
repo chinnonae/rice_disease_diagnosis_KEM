@@ -7,11 +7,11 @@ import play.api.mvc._
   */
 class Authentication extends Controller {
 
-  def loginPage = Action {
-    Ok(views.html.login())
+  def loginModal = Action {
+    Ok(views.html.login()).as(HTML)
   }
 
-  def registerPage = Action {
-    Ok(views.html.register())
+  def registerModal = Action {
+    Ok(views.html.register()).as(HTML)
   }
 }
