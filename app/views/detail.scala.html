@@ -1,9 +1,9 @@
-@(title: String)(content: Html)
+@(disease: String)
 
 @main("Disease Name") {
   <div class="container-fluid">
     <div class="page-header">
-      <h1>Disease Name</h1>
+      <h1>@disease</h1>
     </div>
 
     <div class="row">
@@ -16,7 +16,7 @@
           sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
       </div>
       <div class="sidebar col-xs-12 col-md-3">
-        <img src="static/images/rice.jpg" width="250" height="250" alt="image" />
+        <img src="@routes.Assets.at("images/rice.jpg")" width="250" height="250" alt="image" />
       </div>
     </div>
 
