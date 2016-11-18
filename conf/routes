@@ -8,11 +8,11 @@ GET     /                           controllers.Application.index
 # App
 GET     /diseases                   controllers.Application.diseasesPage
 GET     /new-issue                  controllers.Application.newIssuePage
-GET     /disease                    controllers.Application.diseasesDetailPage
+GET     /disease/:id                controllers.Application.diseasesDetailPage(id: Int)
+GET     /create-disease             controllers.Development.createDiseaseView
+POST    /create-disease             controllers.Development.createDiseasePOST
 
 # User authentication
-GET     /login                      controllers.Authentication.loginModal
-GET     /register                   controllers.Authentication.registerModal
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
