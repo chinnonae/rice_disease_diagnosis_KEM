@@ -26,8 +26,11 @@ class Application @Inject() (diseaseRepo: DiseaseRepo) extends Controller {
     Ok(views.html.new_issue())
   }
 
-  def diseasesDetailPage(id: Int) = Action {
-    Ok(views.html.detail("Disease"))
+  def diseasesDetailPage(id: Int) = Action.async { implicit request =>
+    for {
+      Some(disease) <- diseaseRepo.findById(id)
+    } yield Ok(views.html.detail(disease))
+
   }
 
 }

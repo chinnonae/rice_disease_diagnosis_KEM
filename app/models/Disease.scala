@@ -14,7 +14,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
   */
 
 case class Disease(
-                    id: Option[Int],
+                    id: Int,
                     name: String,
                     whatItDoes: String,
                     whyAndWhereItOccurs: String,
@@ -30,13 +30,13 @@ class DiseaseRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
   def all: Future[Seq[Disease]] = db.run(Diseases.result)
 
   def create(disease: Disease): Future[Int] = {
-    db.run(Diseases returning Diseases.map(_.id.get) += disease)
+    db.run(Diseases returning Diseases.map(_.id) += disease)
   }
 
-  def findById(id: Int): Future[Disease] = db.run(Diseases.filter(_.id.get === id).result.head)
+  def findById(id: Int): Future[Option[Disease]] = db.run(Diseases.filter(_.id === id).result.headOption)
 
   private class DiseasesTable(tag: Tag) extends Table[Disease](tag, "disease") {
-    def id = column[Option[Int]]("id", O.PrimaryKey, O.AutoInc)
+    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def name = column[String]("name")
     def whatItDoes = column[String]("what_it_does")
     def whyAndWhereItOccurs = column[String]("why_and_where_it_occurs")

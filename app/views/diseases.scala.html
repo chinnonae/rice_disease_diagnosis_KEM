@@ -13,7 +13,7 @@
                   <div class="thumbnail">
                       <img src="@routes.Assets.at("images/rice.jpg")" width="250" height="250" alt="image" />
                       <div class="caption">
-                          <h3>@disease.name</h3>
+                          <a href="@routes.Application.diseasesDetailPage(disease.id)"><h3>@disease.name</h3></a>
                           <p>@disease.whatItDoes.truncate(200)</p>
                       </div>
                   </div>

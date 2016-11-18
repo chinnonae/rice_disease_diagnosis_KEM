@@ -28,7 +28,7 @@ class Development @Inject()(protected val diseaseRepo: DiseaseRepo) extends Cont
 
   private val diseaseForm = Form(
     mapping(
-      "id" -> optional(number),
+      "id" -> ignored(0),
       "name" -> text,
       "what_it_does" -> text,
       "why_and_where_it_occurs" -> text,

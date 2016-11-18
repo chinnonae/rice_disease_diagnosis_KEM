@@ -13,7 +13,7 @@ import scala.concurrent.Future
   */
 
 case class Issue(
-                  id: Option[Int],
+                  id: Int,
                   imageSrc: String,
                   color: Int,
                   shape: Int,
@@ -30,11 +30,11 @@ class IssueRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
   def all(): Future[Seq[Issue]] = db.run(Issues.result)
 
   def create(issue: Issue): Future[Int] = {
-    db.run(Issues returning Issues.map(_.id.get) += issue)
+    db.run(Issues returning Issues.map(_.id) += issue)
   }
 
   private class IssuesTable(tag: Tag) extends Table[Issue](tag, "issue") {
-    def id = column[Option[Int]]("id", O.PrimaryKey, O.AutoInc)
+    def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def imageSrc = column[String]("image_source")
     def color = column[Int]("color")
     def shape = column[Int]("shape")
