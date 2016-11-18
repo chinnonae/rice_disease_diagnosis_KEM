@@ -1,5 +1,7 @@
 package controllers
 
+import play.api.data.Forms._
+import play.api.data._
 import play.api.mvc._
 
 /**
@@ -7,11 +9,4 @@ import play.api.mvc._
   */
 class Authentication extends Controller {
 
-  def loginModal = Action {
-    Ok(views.html.login()).as(HTML)
-  }
-
-  def registerModal = Action {
-    Ok(views.html.register()).as(HTML)
-  }
 }

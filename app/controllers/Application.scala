@@ -1,22 +1,32 @@
 package controllers
 
+import javax.inject.Inject
+
+import models.DiseaseRepo
 import play.api.mvc._
 import play.api.mvc.Action
-class Application extends Controller {
+import scala.concurrent.ExecutionContext.Implicits.global
 
-  def index = Action {
-    Ok(views.html.diseases())
+
+class Application @Inject() (diseaseRepo: DiseaseRepo) extends Controller {
+
+  def index = Action.async { implicit request =>
+    diseaseRepo.all.map {
+      diseases => Ok(views.html.diseases(diseases))
+    }
   }
 
-  def diseasesPage = Action {
-    Ok(views.html.diseases())
+  def diseasesPage = Action.async { implicit request =>
+    diseaseRepo.all.map {
+      diseases => Ok(views.html.diseases(diseases))
+    }
   }
 
   def newIssuePage = Action {
     Ok(views.html.new_issue())
   }
 
-  def diseasesDetailPage = Action {
+  def diseasesDetailPage(id: Int) = Action {
     Ok(views.html.detail("Disease"))
   }
 
