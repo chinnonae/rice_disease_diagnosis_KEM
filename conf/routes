@@ -6,9 +6,10 @@
 GET     /                           controllers.Application.index
 
 # App
-GET     /diseases                   controllers.Application.diseasesPage
-GET     /new-issue                  controllers.Application.newIssuePage
-GET     /disease/:id                controllers.Application.diseasesDetailPage(id: Int)
+GET     /diseases                   controllers.Disease.diseasesPage
+GET     /new-issue                  controllers.Issue.newIssuePage
+POST    /new-issue                  controllers.Issue.newIssuePOST
+GET     /disease/:id                controllers.Disease.diseasesDetailPage(id: Int)
 GET     /create-disease             controllers.Development.createDiseaseView
 POST    /create-disease             controllers.Development.createDiseasePOST
 
