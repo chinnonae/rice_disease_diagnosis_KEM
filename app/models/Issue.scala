@@ -33,6 +33,18 @@ class IssueRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
     db.run(Issues returning Issues.map(_.id) += issue)
   }
 
+  def create(imageSrc: String, color: String, shape: String, part: String, addInfo: Option[String] = None): Future[Int] = {
+    create(Issue(
+      -1,
+      imageSrc,
+      IssueConstant.COLORS.indexOf(color),
+      IssueConstant.SHAPES.indexOf(shape),
+      IssueConstant.PARTS.indexOf(part),
+      addInfo,
+      None
+    ))
+  }
+
   private class IssuesTable(tag: Tag) extends Table[Issue](tag, "issue") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def imageSrc = column[String]("image_source")
@@ -44,4 +56,10 @@ class IssueRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
 
     override def * = (id, imageSrc, color, shape, part, addInfo, answer) <> (Issue.tupled, Issue.unapply)
   }
+}
+
+object IssueConstant {
+  val COLORS = Array("Brown", "Red")
+  val SHAPES = Array("Spot", "Circle")
+  val PARTS = Array("Leaf", "Stem")
 }
