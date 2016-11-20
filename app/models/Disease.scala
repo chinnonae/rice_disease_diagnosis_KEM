@@ -4,6 +4,7 @@ import javax.inject.Inject
 
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import play.api.libs.concurrent.Execution.defaultContext
+
 import slick.driver.JdbcProfile
 
 import scala.concurrent.Future
