@@ -1,68 +1,114 @@
+@import controllers.IssueData
+
+@(colors: Array[String], shapes: Array[String], parts: Array[String])(issueForm: Form[IssueData])(implicit messages: Messages)
+
+@id(field: String) = {@issueForm(field).id}
+@name(field: String) = {@issueForm(field).name}
 
 @main("New Issue") {
 
-  <div class="container-fluid">
-    <div class="page-header">
-      <h1>New Issue</h1>
-    </div>
-
-    <form class="" action="" method="post">
-      <div class="form-group">
-        <label><img src="@routes.Assets.at("images/rice.jpg")" width="250" height="250" alt="image" /></label>
-        <input type="file">
-      </div>
-
-      <div class="form-group">
-        <div class="btn-group">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Choose Color  <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><a href="#">Brown</a></li>
-            <li><a href="#">Yellow</a></li>
-          </ul>
-        </div>
-      </div>
-
-        <div class="form-group">
-          <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Choose Shape  <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a href="#">Line</a></li>
-              <li><a href="#">Circle</a></li>
-            </ul>
-          </div>
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>New Issue</h1>
         </div>
 
-        <div class="form-group">
-          <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Choose Part  <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-              <li><a href="#">Leaf</a></li>
-              <li><a href="#">Stem</a></li>
-              <li><a href="#">Root</a></li>
-            </ul>
-          </div>
-        </div>
 
-        <div class="form-group">
-          <div class="row">
-            <div class="col-xs-9 col-md-6">
-              <label for="textarea-addition">Additional Information: </label>
-              <textarea class="form-control" id="textarea-addition" rows="10"></textarea>
+        @helper.form(action = routes.Issue.newIssuePOST, 'enctype -> "multipart/form-data", 'id -> "issue-form") {
+            <div class="form-group">
+                <label><img src="@routes.Assets.at("images/rice.jpg")" alt="image" id="image-sample"/></label>
+                <input type="file" onchange="readAndPutImage(this)" id="upload-image" name="upload-image">
             </div>
-          </div>
-        </div>
 
-        <div class="form-group">
-          <button class="btn btn-primary" type="submit" name="button">Submit</button>
-        </div>
+            <div class="form-group">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="button-color">
+                        Choose Color  <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                    @for(color <- colors) {
+                        <li><a href="javascript:void(0);" onclick="setInput(this, '#@id("color")', '#button-color')">@color</a></li>
+                    }
+                    </ul>
+                </div>
+            </div>
 
-    </form>
-  </div>
+            <div class="form-group">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="button-shape">
+                        Choose Shape  <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                    @for(shape <- shapes) {
+                        <li><a href="javascript:void(0)" onclick="setInput(this, '#@id("shape")', '#button-shape')">@shape</a></li>
+                    }
+                    </ul>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="button-part">
+                        Choose Part  <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                    @for(part <- parts) {
+                        <li><a href="javascript:void(0)" onclick="setInput(this, '#@id("part")', '#button-part')">@part</a></li>
+                    }
+                    </ul>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-9 col-md-6">
+                        <label for="additional-info">Additional Information: </label>
+                        <textarea class="form-control" id="additional-info" name="additional-info" rows="10" form="issue-form"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input class="btn btn-primary" type="submit"/>
+            </div>
+
+
+            <input type="hidden" id="@id("color")" name="@name("color")" value=""/>
+            <input type="hidden" id="@id("shape")" name="@name("shape")" value=""/>
+            <input type="hidden" id="@id("part")" name="@name("part")" value=""/>
+
+        }
+
+        <style>
+        #image-sample {
+            min-width: 5%;
+            max-width: 800px;
+        }
+        </style>
+        <script>
+                function readAndPutImage(input) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            $('#image-sample')
+                                    .attr('src', e.target.result)
+                                    .width(250)
+                                    .height(250)
+
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+
+                function setInput(self, field, button) {
+                    if (field && button && self) {
+                        var text = self.childNodes[0].nodeValue;
+                        console.log($(button)[0].child)
+                        $(field)[0].value = text;
+                        $(button)[0].childNodes.item(0).nodeValue = text + "  ";
+                    }
+                }
+        </script>
+    </div>
 
 }
