@@ -1,4 +1,5 @@
 @import utils.StringUtil.extendString
+@import models.Disease
 @(diseases:Seq[Disease])
 
 @main("Diseases") {
@@ -13,7 +14,7 @@
                   <div class="thumbnail">
                       <img src="@routes.Assets.at("images/rice.jpg")" width="250" height="250" alt="image" />
                       <div class="caption">
-                          <a href="@routes.Application.diseasesDetailPage(disease.id)"><h3>@disease.name</h3></a>
+                          <a href="@routes.Disease.diseasesDetailPage(disease.id)"><h3>@disease.name</h3></a>
                           <p>@disease.whatItDoes.truncate(200)</p>
                       </div>
                   </div>
