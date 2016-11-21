@@ -35,9 +35,12 @@ class Issue @Inject()(protected val issueRepo: IssueRepo) extends Controller {
 
     val temporaryName = request.id.toString
     val tempdir = System.getProperty("java.io.tmpdir")
+    val homedir = System.getProperty("user.home")
 
+    new File(s"$tempdir/rice_diseases/temp/images").mkdirs()
+    new File(s"$homedir/rice_diseases/images").mkdirs()
     val tempPath = s"$tempdir/rice_diseases/temp/images/$temporaryName"
-    val permDir = s"$tempdir/rice_diseases/images"
+    val permDir = s"$homedir/rice_diseases/images"
 
     val storedImageFile = saveFile(uploadImage, tempPath, permDir)
 
@@ -46,9 +49,21 @@ class Issue @Inject()(protected val issueRepo: IssueRepo) extends Controller {
       submitedInfo("color"),
       submitedInfo("shape"),
       submitedInfo("part"),
-      None
+      Some(submitedInfo("additional-info").trim)
     ).map { id =>
-      Redirect(routes.Issue.newIssuePage)
+      Redirect(routes.Issue.issuePage(id))
+    }
+  }
+
+  def issuesPage = Action.async { implicit request =>
+    issueRepo.all().map {
+      issues => Ok(views.html.IssueList(issues.sortBy(- _.id)))
+    }
+  }
+
+  def issuePage(id: Int) = Action.async { implicit request =>
+    issueRepo.findById(id).map {
+      issue => Ok(views.html.IssueDetail(issue.get))
     }
   }
 
@@ -56,7 +71,7 @@ class Issue @Inject()(protected val issueRepo: IssueRepo) extends Controller {
     val tempStoredFile = file.ref.moveTo(new File(tempPath))
 
     val fileExtension = file.contentType.get.split('/')(1)
-    val fileName = md5Checksum(tempStoredFile) + fileExtension
+    val fileName = md5Checksum(tempStoredFile) + "." + fileExtension
 
     val permStoredFile = new File(s"$permDir/$fileName")
     if (permStoredFile.exists) return permStoredFile

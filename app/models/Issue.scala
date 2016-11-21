@@ -29,6 +29,8 @@ class IssueRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
 
   def all(): Future[Seq[Issue]] = db.run(Issues.result)
 
+  def findById(id: Int): Future[Option[Issue]] = db.run(Issues.filter(_.id === id).result.headOption)
+
   def create(issue: Issue): Future[Int] = {
     db.run(Issues returning Issues.map(_.id) += issue)
   }
