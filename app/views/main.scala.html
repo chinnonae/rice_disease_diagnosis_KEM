@@ -23,8 +23,8 @@
                     <li><a href="@routes.Issue.issuesPage()">Issues</a></li>
                 </ul>
                 <ul class="nav sidebar-nav authen-bars">
-                    <li><a href="javascript:onRegisterClick()">Register</a></li>
-                    <li><a href="javascript:onLoginClick()" id="login">Login</a></li>
+                    <li><a href="@routes.Authentication.registerPage()">Register</a></li>
+                    <li><a href="@routes.Authentication.loginPage()" id="login">Login</a></li>
                 </ul>
             </div>
 
@@ -46,12 +46,8 @@
                 <div class="app-content">
                     @content
                 </div>
-
-
             </div>
 
-            @login()
-            @register()
             <script>
                 function onLoginClick() {
                     $("#login-modal").modal('show')

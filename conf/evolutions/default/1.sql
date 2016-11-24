@@ -16,3 +16,11 @@ create table disease (
   why_and_where_it_occurs TEXT NOT NULL ,
   how_to_identify TEXT NOT NULL
 );
+
+create table member (
+  id SERIAL PRIMARY KEY ,
+  username VARCHAR(20) UNIQUE UNIQUE ,
+  hashed_password VARCHAR(255) NOT NULL ,
+  email VARCHAR(255) UNIQUE NOT NULL ,
+  rice_variety VARCHAR(255) NOT NULL
+);

@@ -16,6 +16,7 @@ libraryDependencies ++= Seq(
   specs2 % Test,
   "com.typesafe.play" %% "play-slick" % "2.0.0",
   "com.typesafe.play" %% "play-slick-evolutions" % "2.0.0",
-  "org.postgresql" % "postgresql" % "9.4.1212"
+  "org.postgresql" % "postgresql" % "9.4.1212",
+  "com.pauldijou" %% "jwt-play" % "0.9.2"
 )
 
