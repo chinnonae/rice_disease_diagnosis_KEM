@@ -56,8 +56,8 @@ class DiagnosisService @Inject() (ws: WSClient){
         val respondArr = Json.parse(response.body).as[JsArray].value
         respondArr.map { jsValue =>
           val obj = jsValue.as[JsObject].value
-          val disease = obj.get("name").get.toString
-          val chance = obj.get("percentage").get.toString.toDouble
+          val disease = obj("name").as[JsString].value
+          val chance = obj("percentage").as[JsNumber].value.toDouble
           Result(disease, chance)
         }.toArray
       }
