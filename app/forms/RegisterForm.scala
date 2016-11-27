@@ -9,7 +9,7 @@ import play.api.data.Forms._
 
 object RegisterForm {
 
-  case class Data(username: String, password: String, confirmedPassword: String, email: String, riceVariety: String)
+  case class Data(username: String, password: String, confirmedPassword: String, email: String, riceVariety: String, latitude: BigDecimal, longtitude: BigDecimal)
 
   val form = Form(
     mapping(
@@ -17,7 +17,9 @@ object RegisterForm {
       "password" -> text,
       "confirmed-password" -> text,
       "email" -> email,
-      "rice-variety" -> text
+      "rice-variety" -> text,
+      "latitude" -> bigDecimal,
+      "longtitude" -> bigDecimal
     )(Data.apply)(Data.unapply)
   )
 

@@ -12,6 +12,7 @@ import play.api.i18n.MessagesApi
 import utils.AuthSession
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 /**
   * Created by chinnonae on 11/14/16.
@@ -24,9 +25,11 @@ class Authentication @Inject()(userRepo: UserRepo, messagesApi: MessagesApi, aut
 
   def registerPOST = Action.async(parse.urlFormEncoded) { implicit request =>
     val input = RegisterForm.form.bindFromRequest()
-    val extra_arg = Map("riceVariety" -> input.get.riceVariety)
-
-
+    val extra_arg = Map(
+      "riceVariety" -> input.get.riceVariety,
+      "lat" -> input.get.latitude.toString,
+      "lon" -> input.get.longtitude.toString
+    )
 
     userRepo.create(input.get.username, input.get.password, input.get.email, extra_arg).map { id =>
 

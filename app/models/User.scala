@@ -18,17 +18,19 @@ case class User(
                username: String,
                hashPassword: String,
                email: String,
-               riceVariety: String
+               riceVariety: String,
+               latitude: Double,
+               longtitude: Double
                )
 
 class UserRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends HasDatabaseConfigProvider[JdbcProfile] {
   import driver.api._
 
-  private val Users = TableQuery[UserTable]
+  val Users = TableQuery[UserTable]
 
   def create(username: String, password: String, email: String, extra_arg: Map[String, String]): Future[Int] = {
     val hashedPassword = DigestUtils.sha256Hex(password)
-    val newUser = User(None, username, hashedPassword, email, extra_arg("riceVariety"))
+    val newUser = User(None, username, hashedPassword, email, extra_arg("riceVariety"), extra_arg("lat").toDouble, extra_arg("lon").toDouble)
 
     db.run(Users returning Users.map(_.id) += newUser)
   }
@@ -41,14 +43,16 @@ class UserRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
     db.run(Users.filter(_.username === username).result.headOption)
   }
 
-  private class UserTable(tag: Tag) extends Table[User](tag, "member") {
+  class UserTable(tag: Tag) extends Table[User](tag, "member") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def username = column[String]("username")
     def hashedPassword = column[String]("hashed_password")
     def email = column[String]("email")
     def riceVariety = column[String]("rice_variety")
+    def latitude = column[Double]("latitude")
+    def longtitude = column[Double]("longtitude")
 
-    override def * = (id.?, username, hashedPassword, email, riceVariety) <> (User.tupled, User.unapply)
+    override def * = (id.?, username, hashedPassword, email, riceVariety, latitude, longtitude) <> (User.tupled, User.unapply)
   }
 
 }
