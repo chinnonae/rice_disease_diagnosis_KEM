@@ -4,7 +4,8 @@ create table disease (
   name VARCHAR(255) NOT NULL ,
   what_it_does TEXT NOT NULL ,
   why_and_where_it_occurs TEXT NOT NULL ,
-  how_to_identify TEXT NOT NULL
+  how_to_identify TEXT NOT NULL ,
+  image_source TEXT NOT NULL
 );
 
 create table member (

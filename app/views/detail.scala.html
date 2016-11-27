@@ -13,7 +13,7 @@
         <p>@disease.whatItDoes</p>
       </div>
       <div class="sidebar col-xs-12 col-md-3">
-        <img src="@routes.Assets.at("images/rice.jpg")" width="250" height="250" alt="image" />
+        <img src="@disease.imageSrc" width="250" height="250" alt="image" />
       </div>
     </div>
 
@@ -28,6 +28,13 @@
       <h2>How to identify</h2>
       <div class="col-xs-12 col-md-9">
         <p>@disease.howToIdentify</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <h2>Solution</h2>
+      <div class="col-xs-12 col-md-9">
+        <p>@disease.solution</p>
       </div>
     </div>
   </div>

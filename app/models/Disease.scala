@@ -19,7 +19,9 @@ case class Disease(
                     name: String,
                     whatItDoes: String,
                     whyAndWhereItOccurs: String,
-                    howToIdentify: String
+                    howToIdentify: String,
+                    solution: String,
+                    imageSrc: String
                   )
 
 class DiseaseRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) extends  HasDatabaseConfigProvider[JdbcProfile] {
@@ -42,7 +44,9 @@ class DiseaseRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
     def whatItDoes = column[String]("what_it_does")
     def whyAndWhereItOccurs = column[String]("why_and_where_it_occurs")
     def howToIdentify = column[String]("how_to_identify")
+    def imageSrc = column[String]("image_source")
+    def solution = column[String]("solution")
 
-    override def * = (id, name, whatItDoes, whyAndWhereItOccurs, howToIdentify) <> (Disease.tupled, Disease.unapply)
+    override def * = (id, name, whatItDoes, whyAndWhereItOccurs, howToIdentify, solution, imageSrc) <> (Disease.tupled, Disease.unapply)
   }
 }

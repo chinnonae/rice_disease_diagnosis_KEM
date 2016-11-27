@@ -32,7 +32,9 @@ class Development @Inject()(protected val diseaseRepo: DiseaseRepo) extends Cont
       "name" -> text,
       "what_it_does" -> text,
       "why_and_where_it_occurs" -> text,
-      "how_to_identify" -> text
+      "how_to_identify" -> text,
+      "solution" -> text,
+      "image_source" -> text
     )(Disease.apply)(Disease.unapply)
   )
 }

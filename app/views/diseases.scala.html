@@ -12,7 +12,7 @@
           @for(disease <- diseases) {
               <div class="col-md-4 col-xs-6">
                   <div class="thumbnail">
-                      <img src="@routes.Assets.at("images/rice.jpg")" width="250" height="250" alt="image" />
+                      <img src="@(disease.imageSrc)"alt="image" id="disease-image" />
                       <div class="caption">
                           <a href="@routes.Disease.diseasesDetailPage(disease.id)"><h3>@disease.name</h3></a>
                           <p>@disease.whatItDoes.truncate(200)</p>
@@ -22,4 +22,9 @@
           }
       </div>
   </div>
+    <style>
+        #disease-image {
+            max-height: 250px;
+        }
+    </style>
 }
