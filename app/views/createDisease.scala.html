@@ -1,0 +1,21 @@
+@import models.Disease
+@(diseaseForm: Form[Disease])(implicit messages: Messages)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  @helper.form(action = routes.Development.createDiseasePOST()) {
+    @helper.inputText(diseaseForm("name"))
+    @helper.textarea(diseaseForm("what_it_does"))
+    @helper.textarea(diseaseForm("why_and_where_it_occurs"))
+    @helper.textarea(diseaseForm("how_to_identify"))
+    @helper.textarea(diseaseForm("solution"))
+    @helper.textarea(diseaseForm("image_source"))
+    <input type="submit">
+  }
+</body>
+</html>

@@ -1,0 +1,65 @@
+@import models.Issue
+@import models.IssueConstant
+@(issue: Issue)
+
+@main("Issue") {
+
+    <div class="container-fluid">
+        <div class="page-header header">
+            <h1>Issue#@(issue.id)</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <img src="@routes.AssetsLoader.LoadRiceImage(issue.imageSrc.substring(issue.imageSrc.lastIndexOf('/')+1))" class="rice-image"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <label>Color:</label>
+            </div>
+            <div class="col-md-2">
+                @IssueConstant.COLORS(issue.color)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <label>Shape:</label>
+            </div>
+            <div class="col-md-2">
+                @IssueConstant.SHAPES(issue.shape)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <label>Part:</label>
+            </div>
+            <div class="col-md-2">
+                @IssueConstant.PARTS(issue.part)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <label>Additional Information:</label>
+            </div>
+            <div class="col-md-2">
+                <textarea wrap="soft" readonly>@issue.addInfo.get.trim</textarea>
+            </div>
+        </div>
+        @if(issue.answer.isDefined && !issue.answer.get.isEmpty) {
+            <div class="row">
+                <div class="col-md-2">
+                    <label>Answer:</label>
+                </div>
+                <div class="col-md-2">
+                    <textarea wrap="soft" readonly>@issue.answer.get.trim()</textarea>
+                </div>
+            </div>
+        }
+    </div>
+    <style>
+        .rice-image {
+            max-height: 300px;
+        }
+    </style>
+}

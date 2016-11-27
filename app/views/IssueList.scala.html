@@ -1,0 +1,12 @@
+@import models.Issue
+@(issues: Seq[Issue])
+
+@main("Issues") {
+    <div class="container-fluid">
+        <ul>
+            @for(issue <- issues) {
+                <li><a href="@routes.Issue.issuePage(issue.id)">Issue#@(issue.id)</a></li>
+            }
+        </ul>
+    </div>
+}

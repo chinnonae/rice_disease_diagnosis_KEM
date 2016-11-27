@@ -1,0 +1,67 @@
+.navbar-inverse {
+  background-color: #62b22f;
+}
+
+.navbar .navbar-brand {
+  color: white;
+}
+
+.navbar-inverse .navbar-nav > li > a , .navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:active, .navbar-inverse .navbar-nav > li > a:visited {
+    color: white;
+}
+
+.navbar-header {
+    width: 100%;
+}
+
+#username.navbar-text {
+    color: white;
+}
+
+.app-content {
+    margin-top: 50px
+}
+
+.authen-bars {
+    position: absolute;
+    bottom: 50px;
+}
+
+.menu-bars {
+    top: 0;
+}
+
+#nav-toggle {
+    margin-left: 5px;
+}
+
+input {
+  vertical-align: baseline;
+  position: relative;
+}
+
+#map {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+#map-wrapper {
+    height: 400px
+}
+
+
+@media(min-width: 768px ){
+
+    #map-wrapper {
+
+        height: 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .row {
+        position: relative;
+    }
+}

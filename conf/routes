@@ -5,7 +5,25 @@
 # Home page
 GET     /                           controllers.Application.index
 
+# App
+GET     /diseases                   controllers.Disease.diseasesPage
+GET     /new-issue                  controllers.Issue.newIssuePage
+POST    /new-issue                  controllers.Issue.newIssuePOST
+GET     /disease/:id                controllers.Disease.diseasesDetailPage(id: Int)
+GET     /create-disease             controllers.Development.createDiseaseView
+POST    /create-disease             controllers.Development.createDiseasePOST
+GET     /issues                     controllers.Issue.issuesPage
+GET     /issue/:id                  controllers.Issue.issuePage(id: Int)
+
+# User authentication
+GET     /register                   controllers.Authentication.registerPage
+POST    /register                   controllers.Authentication.registerPOST
+GET     /login                      controllers.Authentication.loginPage
+POST    /login                      controllers.Authentication.loginPOST
+GET     /logout                     controllers.Authentication.logoutPOST
+GET     /profile/:token             controllers.Authentication.profileGET(token: String)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /rice-images/*file          controllers.AssetsLoader.LoadRiceImage(file)
 
-    

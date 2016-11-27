@@ -1,0 +1,113 @@
+@import forms.RegisterForm
+@(registerForm: Form[RegisterForm.Data])(implicit  messages: Messages)
+
+@id(field: String)={@registerForm(field).id}
+@name(field: String)={@registerForm(field).name}
+
+@main("Register") {
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2tHMqLHtjsGOihjM7UUA0_yiddlF7v-w&callback=initMap">
+    </script>
+    <div class="register-form-wrapper container-fluid">
+        <div class="header">
+            <h1 align="center">Register</h1>
+        </div>
+
+        <form action="@routes.Authentication.registerPOST()" method="post">
+            <div class="row" id="form-wrapper">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" class="form-control" id="@id("username")" name="@name("username")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" id="@id("password")" name="@name("password")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Confirmed Password</label>
+                        <input type="password" class="form-control" id="@id("confirmed-password")" name="@name("confirmed-password")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" id="@id("email")" name="@name("email")" />
+                    </div>
+                    <div class="form-group">
+                        <label>Rice Variety</label>
+                        <input type="text" class="form-control" id="@id("rice-variety")" name="@name("rice-variety")" />
+                    </div>
+
+                    <input type="hidden" id="@id("latitude")" name="@name("latitude")"/>
+                    <input type="hidden" id="@id("longtitude")" name="@name("longtitude")"/>
+
+                    <input type="submit" class="btn btn-primary"/>
+                </div>
+                <div class="col-md-8" id="map-wrapper">
+                    <div id="map"></div>
+                    <script>
+                            // Note: This example requires that you consent to location sharing when
+                            // prompted by your browser. If you see the error "The Geolocation service
+                            // failed.", it means you probably did not give permission for the browser to
+                            // locate you.
+
+                            function initMap() {
+                                var map = new google.maps.Map(document.getElementById('map'), {
+                                    center: {lat: 13.752, lng: 100.504},
+                                    zoom: 6
+                                });
+                                $('#latitude').val(map.getCenter().lat);
+                                $('#longtitude').val(map.getCenter().lng);
+                                var infoWindow = new google.maps.InfoWindow({map: map});
+                                var marker = new google.maps.Marker({
+                                    draggable: true,
+                                    map: map,
+                                });
+                                google.maps.event.addListener(marker, 'dragend', function(evt){
+                                    var lat = evt.latLng.lat().toFixed(3);
+                                    var lng = evt.latLng.lng().toFixed(3);
+                                    console.log("Lat: " + lat);
+                                    console.log("Long: " + lng);
+                                    $('#latitude').val(lat);
+                                    $('#longtitude').val(lng);
+                                });
+                                // Try HTML5 geolocation.
+                                if (navigator.geolocation) {
+                                    navigator.geolocation.getCurrentPosition(function(position) {
+                                        var pos = {
+                                            lat: position.coords.latitude,
+                                            lng: position.coords.longitude
+                                        };
+
+                                        infoWindow.setPosition(pos);
+                                        infoWindow.setContent('Your rice field.');
+                                        map.setCenter(pos);
+                                        marker.setPosition(pos);
+                                        $('#latitude').val(pos.lat);
+                                        $('#longtitude').val(pos.lng);
+
+                                    }, function() {
+                                        handleLocationError(true, infoWindow, map.getCenter());
+                                        marker.setPosition(map.getCenter())
+                                    });
+                                } else {
+                                    // Browser doesn't support Geolocation
+                                    handleLocationError(false, infoWindow, map.getCenter());
+                                }
+                            }
+
+                            function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+                                infoWindow.setPosition(pos);
+                                infoWindow.setContent((browserHasGeolocation ?
+                                        'Error: The Geolocation service failed.' :
+                                        'Error: Your browser doesn\'t support geolocation.') + '\n' +
+                                        'Please place the marker on your rice field.'
+                                );
+                            }
+                    </script>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+}

@@ -1,0 +1,141 @@
+@import forms.data.IssueData
+
+@(colors: Array[String], shapes: Array[String], parts: Array[String], factors: Array[String], growthStages: Array[String])(issueForm: Form[IssueData])(implicit messages: Messages)
+
+@id(field: String) = {@issueForm(field).id}
+@name(field: String) = {@issueForm(field).name}
+
+@main("New Issue") {
+
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>New Issue</h1>
+        </div>
+
+
+        @helper.form(action = routes.Issue.newIssuePOST, 'enctype -> "multipart/form-data", 'id -> "issue-form") {
+            <div class="form-group">
+                <label><img src="@routes.Assets.at("images/rice.jpg")" alt="image" id="image-sample"/></label>
+                <input type="file" onchange="readAndPutImage(this)" id="upload-image" name="upload-image">
+            </div>
+
+            <div class="form-group">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="button-color">
+                        Choose Color  <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                    @for(color <- colors) {
+                        <li><a href="javascript:void(0);" onclick="setInput(this, '#@id("color")', '#button-color')">@color</a></li>
+                    }
+                    </ul>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="button-shape">
+                        Choose Shape  <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                    @for(shape <- shapes) {
+                        <li><a href="javascript:void(0)" onclick="setInput(this, '#@id("shape")', '#button-shape')">@shape</a></li>
+                    }
+                    </ul>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="button-part">
+                        Choose Part  <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                    @for(part <- parts) {
+                        <li><a href="javascript:void(0)" onclick="setInput(this, '#@id("part")', '#button-part')">@part</a></li>
+                    }
+                    </ul>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="button-factor">
+                        Choose Factor  <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                    @for(factor <- factors) {
+                        <li><a href="javascript:void(0)" onclick="setInput(this, '#@id("factor")', '#button-factor')">@factor</a></li>
+                    }
+                    </ul>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="button-growth-stage">
+                        Choose Growth Stage  <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                    @for(growthStage <- growthStages) {
+                        <li><a href="javascript:void(0)" onclick="setInput(this, '#@id("growth-stage")', '#button-growth-stage')">@growthStage</a></li>
+                    }
+                    </ul>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-9 col-md-6">
+                        <label for="additional-info">Additional Information: </label>
+                        <textarea class="form-control" id="additional-info" name="additional-info" rows="10" form="issue-form"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input class="btn btn-primary" type="submit"/>
+            </div>
+
+
+            <input type="hidden" id="@id("color")" name="@name("color")" value=""/>
+            <input type="hidden" id="@id("shape")" name="@name("shape")" value=""/>
+            <input type="hidden" id="@id("part")" name="@name("part")" value=""/>
+            <input type="hidden" id="@id("factor")" name="@name("factor")" value=""/>
+            <input type="hidden" id="@id("growth-stage")" name="@name("growth-stage")" value=""/>
+
+        }
+
+        <style>
+        #image-sample {
+            max-height: 400px;
+        }
+        </style>
+        <script>
+                function readAndPutImage(input) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            $('#image-sample')
+                                    .attr('src', e.target.result)
+                                    .width(250)
+                                    .height(250)
+
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+
+                function setInput(self, field, button) {
+                    if (field && button && self) {
+                        var text = self.childNodes[0].nodeValue;
+                        console.log($(button)[0].child)
+                        $(field)[0].value = text;
+                        $(button)[0].childNodes.item(0).nodeValue = text + "  ";
+                    }
+                }
+        </script>
+    </div>
+
+}
