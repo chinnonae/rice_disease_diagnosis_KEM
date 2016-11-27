@@ -5,7 +5,8 @@ create table disease (
   what_it_does TEXT NOT NULL ,
   why_and_where_it_occurs TEXT NOT NULL ,
   how_to_identify TEXT NOT NULL ,
-  image_source TEXT NOT NULL
+  image_source TEXT NOT NULL ,
+  solution TEXT NOT NULL
 );
 
 create table member (
@@ -24,7 +25,9 @@ create table issue (
   color INTEGER NOT NULL ,
   shape INTEGER NOT NULL ,
   part INTEGER NOT NULL ,
+  factor INTEGER NOT NULL ,
+  growth_stage INTEGER NOT NULL ,
   additional_info TEXT ,
-  answer TEXT,
+  answer TEXT ,
   user_id INTEGER REFERENCES member(id)
 );
