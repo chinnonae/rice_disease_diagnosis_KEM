@@ -11,6 +11,14 @@
     color: white;
 }
 
+.navbar-header {
+    width: 100%;
+}
+
+#username.navbar-text {
+    color: white;
+}
+
 .app-content {
     margin-top: 50px
 }

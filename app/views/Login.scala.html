@@ -11,7 +11,7 @@
             <h1 align="center">Login</h1>
         </div>
 
-        <form action="@routes.Authentication.loginPOST()">
+        <form action="@routes.Authentication.loginPOST()" method="post">
             <div class="form-group">
                 <label>Username</label>
                 <input type="text" class="form-control" id="@id("username")" name="@name("username")" />

@@ -11,7 +11,7 @@
             <h1 align="center">Register</h1>
         </div>
 
-        <form action="@routes.Authentication.registerPOST()">
+        <form action="@routes.Authentication.registerPOST()" method="post">
             <div class="form-group">
                 <label>Username</label>
                 <input type="text" class="form-control" id="@id("username")" name="@name("username")" />

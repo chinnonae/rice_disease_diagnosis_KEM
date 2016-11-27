@@ -1,3 +1,4 @@
+@import models.User
 @(title: String)(content: Html)
 
 <!DOCTYPE html>
@@ -12,6 +13,7 @@
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
         <script src="@routes.Assets.at("javascripts/jquery-3.1.1.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("bootstrap/js/bootstrap.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/js.cookie.js")" type="text/javascript"></script>
     </head>
     <body>
         <div id="wrapper">
@@ -23,9 +25,15 @@
                     <li><a href="@routes.Issue.issuesPage()">Issues</a></li>
                 </ul>
                 <ul class="nav sidebar-nav authen-bars">
-                    <li><a href="@routes.Authentication.registerPage()">Register</a></li>
-                    <li><a href="@routes.Authentication.loginPage()" id="login">Login</a></li>
+                    <div class="no-logged-in">
+                        <li><a href="@routes.Authentication.registerPage()">Register</a></li>
+                        <li><a href="@routes.Authentication.loginPage()" id="login">Login</a></li>
+                    </div>
+                    <div class="logged-in">
+                        <li><a href="@routes.Authentication.logoutPOST()">Logout</a></li>
+                    </div>
                 </ul>
+
             </div>
 
             <div class="page-content-wrapper">
@@ -39,6 +47,7 @@
                                 <span class="icon-bar"></span>
                             </button>
                             <a class="navbar-brand" href="/">KU Rice Disease</a>
+                            <a class="navbar-text pull-right" href="#" id="username"></a>
                         </div>
                     </div>
                 </nav>
@@ -58,6 +67,17 @@
                 function toggleSidebar() {
                     $("#wrapper").toggleClass('toggled')
                 }
+
+                if(Cookies.get('logged-in')) {
+                    $(".no-logged-in").hide()
+                } else {
+                    $(".logged-in").hide()
+                }
+
+                $.get("/profile/" + Cookies.get("logged-in"))
+                        .then(function(result) {
+                            $('#username').append(result.username)
+                        })
             </script>
 
         </div>
