@@ -15,11 +15,15 @@ import org.apache.commons.codec.digest.DigestUtils
 import models.IssueRepo
 import play.api.libs.Files
 import play.api.mvc.MultipartFormData.FilePart
-
 import models.IssueConstant
 import forms.data.IssueData
+import services.DiagnosisService
+import utils.AuthSession
 
-class Issue @Inject()(protected val issueRepo: IssueRepo) extends Controller {
+import scala.concurrent.{Await, Future}
+import scala.concurrent.duration._
+
+class Issue @Inject()(protected val issueRepo: IssueRepo, authSession: AuthSession) extends Controller {
 
   def newIssuePage = Action {
     Ok(views.html.new_issue(IssueConstant.COLORS, IssueConstant.SHAPES, IssueConstant.PARTS)(issueForm))
@@ -44,15 +48,31 @@ class Issue @Inject()(protected val issueRepo: IssueRepo) extends Controller {
 
     val storedImageFile = saveFile(uploadImage, tempPath, permDir)
 
+    val userOpt = authSession.toUser(request.asInstanceOf[Request[AnyContent]])
+
+    val results = Await.result(DiagnosisService.diseaseDiagnosis(
+      storedImageFile.getAbsolutePath,
+      submitedInfo("color"),
+      submitedInfo("shape"),
+      submitedInfo("part")
+    ), 2.second)
+
+    val answer = results.map { disease =>
+      s"${disease.disease}: ${disease.chance%.2f}"
+    }.mkString("\n")
+
     issueRepo.create(
       storedImageFile.getAbsolutePath,
       submitedInfo("color"),
       submitedInfo("shape"),
       submitedInfo("part"),
-      Some(submitedInfo("additional-info").trim)
+      Some(submitedInfo("additional-info").trim),
+      userOpt,
+      if(answer.isEmpty) answer else "System cannot find the answer"
     ).map { id =>
       Redirect(routes.Issue.issuePage(id))
     }
+
   }
 
   def issuesPage = Action.async { implicit request =>

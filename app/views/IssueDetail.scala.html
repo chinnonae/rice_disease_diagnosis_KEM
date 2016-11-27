@@ -46,7 +46,7 @@
                 <textarea wrap="soft" readonly>@issue.addInfo.get.trim</textarea>
             </div>
         </div>
-        @if(!issue.answer.get.isEmpty) {
+        @if(issue.answer.isDefined && !issue.answer.get.isEmpty) {
             <div class="row">
                 <div class="col-md-2">
                     <label>Answer:</label>

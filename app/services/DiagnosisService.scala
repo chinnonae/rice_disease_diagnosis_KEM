@@ -32,6 +32,10 @@ object DiagnosisService {
 
 
   def diseaseDiagnosis(imageSrc: String, color: String, shape: String, part: String): Future[List[Result]] = {
+    println(imageSrc)
+    println(color)
+    println(shape)
+    println(part)
     val futures = for {
       esResults <- expertSystemDiagnose(color, shape, part)
       ipResults <- imageProcessingDiagnose(imageSrc)
