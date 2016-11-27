@@ -13,8 +13,8 @@ create table member (
   hashed_password VARCHAR(255) NOT NULL ,
   email VARCHAR(255) UNIQUE NOT NULL ,
   rice_variety VARCHAR(255) NOT NULL ,
-  latitude DOUBLE NOT NULL ,
-  longtitude DOUBLE NOT NULL
+  latitude DOUBLE PRECISION NOT NULL ,
+  longtitude DOUBLE PRECISION NOT NULL
 );
 
 create table issue (
