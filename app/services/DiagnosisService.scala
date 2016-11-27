@@ -23,41 +23,38 @@ import scala.concurrent.Future
 object DiagnosisService {
 
   private val prologDriver = SWIPrologDriver
-  private var consult = false
-
-  if(!consult) {
-    prologDriver.consult(System.getProperty("user.dir") + "/KE-rice-disease-diagnosis-KB/engine.pl")
-    consult = true
-  }
+  prologDriver.consult(System.getProperty("user.dir") + "/KE-rice-disease-diagnosis-KB/engine.pl")
 
 
-  def diseaseDiagnosis(imageSrc: String, color: String, shape: String, part: String): Future[List[Result]] = {
-    println(imageSrc)
-    println(color)
-    println(shape)
-    println(part)
+  def diseaseDiagnosis(imageSrc: String, color: String, shape: String, part: String, factor: String,
+                       growthStage: String): Future[List[Result]] = {
     val futures = for {
-      esResults <- expertSystemDiagnose(color, shape, part)
+      esResults <- expertSystemDiagnose(color, shape, part, factor, growthStage)
       ipResults <- imageProcessingDiagnose(imageSrc)
     } yield (esResults, ipResults)
 
     futures.map{ case(esResult: Array[Result], ipResult: Array[Result]) => accuratizeResult(esResult, ipResult)}
   }
 
-  def expertSystemDiagnose(color: String, shape: String, part: String): Future[Array[Result]] = {
+  def expertSystemDiagnose(color: String, shape: String, part: String, factor: String, growthStage: String): Future[Array[Result]] = {
     prologDriver.query(new Query(new Compound(
       "diagnosis",
-      Array[Term](new Variable("Disease"), new Atom(color.toLowerCase), new Atom(part.toLowerCase), new Atom(shape.toLowerCase)))))
-        .map{ query =>
-          val diseases = query.allSolutions()(0).values()
-          var results = Array[Result]()
-          val iterator = diseases.iterator()
-          while(iterator.hasNext) {
-            val disease = iterator.next().toString
-            results = results :+ Result(disease, 50)
+      Array[Term](new Variable("Disease"), new Atom(color.toLowerCase), new Atom(part.toLowerCase),
+        new Atom(shape.toLowerCase), new Atom(factor.toLowerCase), new Atom(growthStage.toLowerCase)))))
+          .map{ query =>
+            if (query.hasSolution) {
+              val diseases = query.allSolutions()(0).values()
+              var results = Array[Result]()
+              val iterator = diseases.iterator()
+              while(iterator.hasNext) {
+                val disease = iterator.next().toString
+                results = results :+ Result(disease, 50)
+              }
+              results
+            } else {
+              Array[Result]()
+            }
           }
-          results
-        }
   }
 
 

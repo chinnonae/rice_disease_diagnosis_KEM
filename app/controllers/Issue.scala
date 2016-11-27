@@ -26,7 +26,7 @@ import scala.concurrent.duration._
 class Issue @Inject()(protected val issueRepo: IssueRepo, authSession: AuthSession) extends Controller {
 
   def newIssuePage = Action {
-    Ok(views.html.new_issue(IssueConstant.COLORS, IssueConstant.SHAPES, IssueConstant.PARTS)(issueForm))
+    Ok(views.html.new_issue(IssueConstant.COLORS, IssueConstant.SHAPES, IssueConstant.PARTS, IssueConstant.FACTOR, IssueConstant.GROWTH_STAGE)(issueForm))
   }
 
   def newIssuePOST = Action.async(parse.multipartFormData) { implicit request =>
@@ -54,7 +54,9 @@ class Issue @Inject()(protected val issueRepo: IssueRepo, authSession: AuthSessi
       storedImageFile.getAbsolutePath,
       submitedInfo("color"),
       submitedInfo("shape"),
-      submitedInfo("part")
+      submitedInfo("part"),
+      submitedInfo("factor"),
+      submitedInfo("growth-stage")
     ), 2.second)
 
     val answer = results.map { disease =>
@@ -66,6 +68,8 @@ class Issue @Inject()(protected val issueRepo: IssueRepo, authSession: AuthSessi
       submitedInfo("color"),
       submitedInfo("shape"),
       submitedInfo("part"),
+      submitedInfo("factor"),
+      submitedInfo("growth-stage"),
       Some(submitedInfo("additional-info").trim),
       userOpt,
       if(answer.isEmpty) answer else "System cannot find the answer"
@@ -118,6 +122,8 @@ class Issue @Inject()(protected val issueRepo: IssueRepo, authSession: AuthSessi
       "color" -> text,
       "shape" -> text,
       "part" -> text,
+      "factor" -> text,
+      "growth_stage" -> text,
       "additional-info" -> text
     )(IssueData.apply)(IssueData.unapply)
   )
