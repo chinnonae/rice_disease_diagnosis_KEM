@@ -4,10 +4,13 @@ package services
 import java.io.File
 import javax.inject.Inject
 
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
 import inference_engine.SWIPrologDriver
 import org.jpl7._
 import play.api.libs.ws._
 import play.api.libs.json._
+import play.api.libs.ws.ahc.AhcWSClient
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -17,10 +20,16 @@ import scala.concurrent.Future
 /**
   * Created by chinnonae on 11/24/16.
   */
-class DiagnosisService @Inject() (ws: WSClient){
+object DiagnosisService {
 
   private val prologDriver = SWIPrologDriver
-  prologDriver.consult(System.getProperty("user.dir") + "/KE-rice-disease-diagnosis-KB/engine.pl")
+  private var consult = false
+
+  if(!consult) {
+    prologDriver.consult(System.getProperty("user.dir") + "/KE-rice-disease-diagnosis-KB/engine.pl")
+    consult = true
+  }
+
 
   def diseaseDiagnosis(imageSrc: String, color: String, shape: String, part: String): Future[List[Result]] = {
     val futures = for {
@@ -50,6 +59,7 @@ class DiagnosisService @Inject() (ws: WSClient){
 
   def imageProcessingDiagnose(imageSrc: String): Future[Array[Result]] = {
     val file = new File(imageSrc)
+    val ws = newWSClient
     ws.url("http://localhost:5000/upload2")
       .post(Map("file_src" -> Seq(imageSrc)))
       .map { response =>
@@ -60,6 +70,10 @@ class DiagnosisService @Inject() (ws: WSClient){
           val chance = obj("percentage").as[JsNumber].value.toDouble
           Result(disease, chance)
         }.toArray
+      }
+      .map { array =>
+        ws.close()
+        array
       }
   }
 
@@ -86,6 +100,13 @@ class DiagnosisService @Inject() (ws: WSClient){
     }
 
     answers.sortBy(- _.chance)
+  }
+
+  private def newWSClient: WSClient = {
+    implicit val system = ActorSystem()
+    implicit val materializer = ActorMaterializer()
+
+    AhcWSClient()
   }
 
   case class Result(disease: String, chance: Double) {
