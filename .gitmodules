@@ -1,6 +1,3 @@
-[submodule "KE-rice-disease-diagnosis-KB"]
-	path = KE-rice-disease-diagnosis-KB
-	url = https://github.com/taweesoft/KE-rice-disease-diagnosis-KB.git
 [submodule "rice_imgpro"]
 	path = rice_imgpro
 	url = git@github.com:taweesoft/rice_imgpro.git
