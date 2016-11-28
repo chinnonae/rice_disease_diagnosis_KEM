@@ -33,7 +33,7 @@ class Authentication @Inject()(userRepo: UserRepo, messagesApi: MessagesApi, aut
 
     userRepo.create(input.get.username, input.get.password, input.get.email, extra_arg).map { id =>
 
-      Ok(views.html.Register(RegisterForm.form))
+      Redirect(routes.Authentication.loginPage())
     }
   }
 
