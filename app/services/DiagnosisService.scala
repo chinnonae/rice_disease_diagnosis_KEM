@@ -95,11 +95,8 @@ object DiagnosisService {
           val esChance = expertSystemResults.collectFirst({case Result(ipResult, chance) => chance}).get
           answers = Result(ipResult.disease, (esChance+ipResult.chance)/2)::answers
         }
-        println("--" + answers)
       }
-      println("++++++++++")
     }
-
     answers.sortBy(- _.chance)
   }
 

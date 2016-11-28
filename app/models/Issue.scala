@@ -48,7 +48,7 @@ class IssueRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
       IssueConstant.COLORS.indexOf(color),
       IssueConstant.SHAPES.indexOf(shape),
       IssueConstant.PARTS.indexOf(part),
-      IssueConstant.FACTOR.indexOf(shape),
+      IssueConstant.FACTOR.indexOf(factor),
       IssueConstant.GROWTH_STAGE.indexOf(growthStage),
       addInfo,
       Some(answer),
@@ -74,13 +74,13 @@ class IssueRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider
 
 object IssueConstant {
   val COLORS = Array("Brown", "Red", "Dark", "Green", "Gray", "Purple", "White", "Yellow", "Orange", "Black",
-    "Light_tan", "Light")
+    "Light_tan", "Light", "None")
   val SHAPES = Array("Spot", "Diamond", "Elliptic", "Spindle", "Circle", "Oval", "Ellipsoid", "Stripe", "Taller_plant",
-    "Thin_leave", "Spore_ball", "Linear")
+    "Thin_leave", "Spore_ball", "Linear", "None")
   val PARTS = Array("Leaf", "Collar", "Node", "Neck", "Panicle", "Leaf_sheath", "Glume", "Spikelet", "Seed",
     "Red_stripe", "Root", "Crown", "Coleoptile", "Leaf_blade", "Pedicel", "Upper_most_leaf_sheath", "Seedling",
-    "Leaf_tips")
+    "Leaf_tips", "None")
   val FACTOR = Array("Low_soil_moisture", "Low_temperature", "High_humidity", "Unflooded_soil", "Toxic_soil",
-    "High_nitrogen", "Rainy", "High_wetness", "pathogen_in_soil", "High_temperature", "Wet_weather")
-  val GROWTH_STAGE =  Array("Late", "Crop", "Any", "Flowering", "Tillering", "Milk", "Reproductive", "Booting")
+    "High_nitrogen", "Rainy", "High_wetness", "pathogen_in_soil", "High_temperature", "Wet_weather", "None")
+  val GROWTH_STAGE =  Array("Late", "Crop", "Any", "Flowering", "Tillering", "Milk", "Reproductive", "Booting", "None")
 }

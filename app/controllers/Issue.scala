@@ -36,6 +36,7 @@ class Issue @Inject()(protected val issueRepo: IssueRepo, authSession: AuthSessi
     } submitedInfo = submitedInfo + (key -> value.head)
     val uploadImage = request.body.file("upload-image").get
 
+    println(submitedInfo.toString)
 
     val temporaryName = request.id.toString
     val tempdir = System.getProperty("java.io.tmpdir")
@@ -57,10 +58,10 @@ class Issue @Inject()(protected val issueRepo: IssueRepo, authSession: AuthSessi
       submitedInfo("part"),
       submitedInfo("factor"),
       submitedInfo("growth-stage")
-    ), 2.second)
+    ), 5.second)
 
     val answer = results.map { disease =>
-      s"${disease.disease}: ${disease.chance%.2f}"
+      s"${disease.disease}: ${disease.chance}"
     }.mkString("\n")
 
     issueRepo.create(
