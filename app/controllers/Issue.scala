@@ -72,7 +72,7 @@ class Issue @Inject()(protected val issueRepo: IssueRepo, authSession: AuthSessi
       submitedInfo("growth-stage"),
       Some(submitedInfo("additional-info").trim),
       userOpt,
-      if(answer.isEmpty) answer else "System cannot find the answer"
+      if(!answer.isEmpty) answer else "System cannot find the answer"
     ).map { id =>
       Redirect(routes.Issue.issuePage(id))
     }
